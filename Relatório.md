@@ -8,6 +8,7 @@ Repositório contendo questões da primeira lista da matéria de Sistemas Operac
 3
 
 4
+
 5
 
 6
