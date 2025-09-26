@@ -8,33 +8,37 @@ Após a compilação, execute o programa com:./Lista1-1
 
 Decisões de Sincronização:
 
-Mutex: Usado para garantir a exclusão mútua. Sempre que uma thread precisa acessar ou modificar uma variável compartilhada(distancias[]; vencedor; corrida_terminada), ela primeiro adquire o lock do mutex. Isso impede que outras threads acessem os mesmos dados simultaneamente, prevenindo condições de corrida. O pthread_mutex_lock e o pthread_mutex_unlock delimitam a seção crítica do código.
+  Mutex: Usado para garantir a exclusão mútua. Sempre que uma thread precisa acessar ou modificar uma variável compartilhada(distancias[]; vencedor; corrida_terminada), ela primeiro adquire o lock do mutex. Isso impede que outras threads acessem os mesmos dados simultaneamente, prevenindo condições de corrida. O pthread_mutex_lock e o pthread_mutex_unlock delimitam a seção crítica do código.
 
-Variável de Condição: Usada para a sincronização de largada. As threads dos cavalos são criadas, mas elas não começam a correr imediatamente. Elas ficam em um estado de espera até que a thread principal, após a contagem regressiva, envie um sinal de broadcast. Esse sinal acorda todas as threads de uma vez, garantindo que a corrida inicie de forma simultânea para todos os participantes.
+  Variável de Condição: Usada para a sincronização de largada. As threads dos cavalos são criadas, mas elas não começam a correr imediatamente. Elas ficam em um estado de espera até que a thread principal, após a contagem regressiva, envie um sinal de broadcast. Esse sinal acorda todas as threads de uma vez, garantindo que a corrida inicie de forma simultânea para todos os participantes.
 
 Evidências de Execução: A execução do programa é acompanhada por printfs que agem como um sistema de logging.
 
-Log de Posição: A cada passo, cada thread imprime a sua própria posição. Isso demonstra que as threads estão executando de forma concorrente, e a ordem dos prints é imprevisível.
+  Log de Posição: A cada passo, cada thread imprime a sua própria posição. Isso demonstra que as threads estão executando de forma concorrente, e a ordem dos prints é imprevisível.
 
-Anúncio do Vencedor: O printf especial(O Cavalo X cruzou a linha de chegada!) marca o exato momento em que a primeira thread atingiu ou ultrapassou a distância final. Como essa ação está dentro de uma seção crítica protegida pelo mutex, ela é atômica e garante que o vencedor seja registrado sem risco de sobreposição por outras threads. 
+  Anúncio do Vencedor: O printf especial(O Cavalo X cruzou a linha de chegada!) marca o exato momento em que a primeira thread atingiu ou ultrapassou a distância final. Como essa ação está dentro de uma seção crítica protegida pelo mutex, ela é atômica e garante que o vencedor seja registrado sem risco de sobreposição por outras threads. 
 
 Análise dos Resultados: A lógica de sincronização implementada no código produz um resultado determinístico para o vencedor.
 
-Vencedor Único: O uso da flag vencedor = -1 (inicialmente) e a condição if (vencedor == -1) dentro da seção crítica garantem que apenas a primeira thread a alcançar essa seção defina o vencedor. As outras threads que chegarem logo depois encontrarão a flag já alterada e não poderão mudar o resultado.
+  Vencedor Único: O uso da flag vencedor = -1 (inicialmente) e a condição if (vencedor == -1) dentro da seção crítica garantem que apenas a primeira thread a alcançar essa seção defina o vencedor. As outras threads que chegarem logo depois encontrarão a flag já alterada e não poderão mudar o resultado.
 
-Finalização da Corrida: A flag corrida_terminada é essencial para o encerramento das threads. Assim que um vencedor é declarado, as threads remanescentes detectam a mudança da flag e terminam sua execução, evitando um laço infinito e liberando recursos.
+  Finalização da Corrida: A flag corrida_terminada é essencial para o encerramento das threads. Assim que um vencedor é declarado, as threads remanescentes detectam a mudança da flag e terminam sua execução, evitando um laço infinito e liberando recursos.
 
-Aposta: A lógica final de verificação da aposta é simples e direta. Se a aposta do usuário for igual ao ID do cavalo vencedor, a aposta é considerada correta.
+  Aposta: A lógica final de verificação da aposta é simples e direta. Se a aposta do usuário for igual ao ID do cavalo vencedor, a aposta é considerada correta.
 
 2>
 
-Como Compilar/Rodar:
+Como Compilar/Rodar: Este programa utiliza as bibliotecas de threads POSIX (pthread) e semáforos POSIX. No Linux, use o seguinte comando: gcc -o Lista1-2 Lista1-2.c -pthread e então ./Lista1-2
 
-Decisões de Sincronização:
+Decisões de Sincronização: A solução produtor-consumidor requer a coordenação de acesso ao buffer e a sinalização de sua capacidade/ocupação. O código usa a combinação ideal de Mutexes e Semáforos para atingir esse objetivo.
 
 Evidências de Execução:
 
-Análise dos Resultados:
+  Logs Concorrentes: O log mostra que as mensagens de 'produtor x' e 'consumidor y' se intercalam de forma não determinística, provando a execução concorrente das threads.
+
+  Latência: A coluna 'Espera: X µs' é a evidência crucial. Ela mostra o tempo que o item levou para ser consumido, calculado com precisão através dos timestamps de produção e consumo.
+
+Análise dos Resultados: O programa processa corretamente o número esperado de itens. A garantia da exclusão mútua e o controle de capacidade previnem que o buffer sofra underflow ou overflow.
 
 3>
 
