@@ -3,8 +3,8 @@ Repositório contendo questões da primeira lista da matéria de Sistemas Operac
 
 1>
 
-Como Compilar/Rodar: Para compilar este programa, é necessário vincular a biblioteca de threads POSIX. No Linux, use o seguinte comando no terminal: gcc -o Lista 1-1 Lista 1-1.c -pthread
-Após a compilação, execute o programa com:./Lista 1-1
+Como Compilar/Rodar: Para compilar este programa, é necessário vincular a biblioteca de threads POSIX. No Linux, use o seguinte comando no terminal: gcc -o Lista1-1 Lista1-1.c -pthread
+Após a compilação, execute o programa com:./Lista1-1
 
 Decisões de Sincronização:
 
