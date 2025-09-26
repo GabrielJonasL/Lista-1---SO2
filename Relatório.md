@@ -102,13 +102,13 @@ Análise dos Resultados:
 
 9>
 
-Como Compilar/Rodar:
+Como Compilar/Rodar: O programa foi corrigido para ler o número de corredores K da entrada padrão. A compilação exige a biblioteca de threads POSIX. Use o compilador GCC e a flag -pthread: gcc Lista1-9.c -o revezamento -pthread e excute com: ./Lista1-9
 
-Decisões de Sincronização:
+Decisões de Sincronização: A sincronização é baseada no mecanismo de Barreira de Threads para forçar o encontro de todos os participantes antes de iniciar o próximo ciclo de trabalho. Onde todas as threads param em pthread_barrier_wait(). A última thread a chegar libera todas as outras para a próxima rodada. O uso do valor de retorno PTHREAD_BARRIER_SERIAL_THREAD é crucial, pois ele permite que apenas uma thread por ciclo execute a lógica de contagem, garantindo a precisão da métrica global.
 
-Evidências de Execução:
+Evidências de Execução: A saída final é a principal evidência da funcionalidade do código, provando que o experimento correu pelo tempo definido e que o contador de rodadas é preciso.
 
-Análise dos Resultados:
+Análise dos Resultados: O resultado "Rodadas por minuto" é a métrica chave de throughput do sistema. O Gargalo é a Thread Mais Lenta: O tempo de cada rodada é determinado pelo tempo que a thread mais lenta leva para chegar à barreira. Ao aumentar o valor de K, você aumenta o número de threads que devem "acertar" o intervalo de tempo aleatório. Isso tende a diminuir o throughput porque a probabilidade de ter uma thread mais lenta que 400ms em um grupo de K é maior para K=10 do que para K=2.
 
 10>
 
