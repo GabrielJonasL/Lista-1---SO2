@@ -92,13 +92,16 @@ Análise dos Resultados:
 
 8>
 
-Como Compilar/Rodar:
+Como Compilar/Rodar: O código exige a vinculação com a biblioteca de threads POSIX e, por usar a função getopt, deve ser compilado da seguinte forma: gcc Lista1-8.c -o pc_bp -pthread então: ./pc_bp e em seguida: Digite o tamanho do buffer
 
-Decisões de Sincronização:
+Decisões de Sincronização: Exclusão Mútua do Buffer, protege o acesso às variáveis de estado do buffer e a lógica de backpressure. O Controle de Vagas/Itens, padrão clássico Produtor-Consumidor. sem_empty bloqueia produtores quando o buffer está cheio. sem_full bloqueia Consumidores quando o buffer está vazio. E o Backpressure, permite que produtores esperem passivamente quando a fila está perigosamente cheia, sendo acordados pelos consumidores quando a fila esvazia o suficiente.
 
-Evidências de Execução:
+Evidências de Execução: A saída do programa fornece logs detalhados que evidenciam a concorrência e o backpressure como:
 
-Análise dos Resultados:
+[Produtor 0] produziu item 123456 (count=10)
+  [Consumidor 2] consumiu item 54321 (Espera: 875 µs) (count=9)
+
+Análise dos Resultados: O uso correto do Mutex com os Semáforos no padrão Produtor-Consumidor e o Buffer Circular garante que as variáveis de estado do buffer nunca sejam corrompidas e que todos os 150 itens sejam processados. E o uso de Poison Pills garante que a thread principal só encerre após todos os itens reais na fila serem processados, permitindo que os consumidores encerrem de forma segura.
 
 9>
 
