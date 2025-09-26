@@ -112,10 +112,10 @@ Análise dos Resultados:
 
 10>
 
-Como Compilar/Rodar:
+Como Compilar/Rodar:Use o compilador GCC e a flag -pthread: gcc Lista1-10.c -o Lista1-10 -pthread
 
-Decisões de Sincronização:
+Decisões de Sincronização: A sincronização é usada tanto para causar o deadlock quanto para proteger as métricas de monitoramento. O deadlock ocorre porque as threads violam a regra de ordem de aquisição e como o recurso que cada um espera está preso pelo outro, a execução congela indefinidamente.
 
-Evidências de Execução:
+Evidências de Execução: A saída do programa fornece a evidência direta de que o deadlock ocorreu e foi detectado. Nenhuma linha de printf de T1 ou T2 é exibida. O log T1 Usando R1 e R2 só é impresso depois que T1 adquire ambos os mutexes. Como as threads travam na tentativa de adquirir o segundo mutex, a função registrar_progresso() nunca é chamada.
 
-Análise dos Resultados:
+Análise dos Resultados: O código atinge seu objetivo principal: confirmando que a aquisição de recursos em ordem inversa entre as threads é uma condição suficiente para causar um deadlock no padrão de Espera Circular. Porém o deadlock ocorre nos primeiros milissegundos, mas a detecção é atrasada artificialmente pelo TIMEOUT de 5 segundos, dando tempo ao watchdog para confirmar a ausência de progresso.
