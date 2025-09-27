@@ -62,13 +62,36 @@ Análise dos Resultados:
 
 5>
 
-Como Compilar/Rodar:
+Como Compilar/Rodar: O código utiliza a biblioteca POSIX Threads, que requer uma flag específica durante a compilação para ser vinculada corretamente ao executável.
 
-Decisões de Sincronização:
+Passos para Compilação e Execução:
 
-Evidências de Execução:
+Salve o código-fonte em um arquivo, por exemplo, pipeline_processamento.c.
 
-Análise dos Resultados:
+Navegue até o diretório onde o arquivo foi salvo.
+
+Use o compilador GCC (ou Clang) com a flag -pthread para incluir as bibliotecas de threads.
+
+Então gcc -o Lista1-5 Lista1-5.c -pthread Executar: Inicie o programa a partir do terminal. ./Lista1-5
+
+Decisões de Sincronização: O desafio de sincronização neste código é gerenciar o acesso a duas filas compartilhadas por múltiplas threads, evitando condições de corrida e o consumo ineficiente de CPU.
+
+  Mutex: É usado para garantir exclusão mútua. Sempre que uma thread precisa modificar a estrutura interna da fila, ela deve primeiro adquirir o mutex. Isso impede que duas threads alterem a fila simultaneamente, o que corromperia seu estado. A seção crítica protegida pelo mutex é mantida a menor possível para maximizar a concorrência.
+
+Variáveis de Condição: São o mecanismo chave para a eficiência. Sem elas, uma thread que encontrasse uma fila cheia ou vazia teria que ficar em um loop, desperdiçando ciclos de CPU. As variáveis de condição permitem que a thread durma até que a condição que a bloqueia mude. pthread_cond_wait atomicamente libera o mutex, permitindo que outra thread entre e altere o estado da fila. Quando a condição muda, a outra thread é acordada com um sinal.
+
+Evidências de Execução: $ ./pipeline_processamento
+[Captura] Gerou item 0
+[Captura] Gerou item 1
+    [Processamento] Processou 0 -> 0
+[Captura] Gerou item 2
+        [Gravação] Gravou item 0
+    [Processamento] Processou 1 -> 2
+[Captura] Gerou item 3
+        [Gravação] Gravou item 2
+    [Processamento] Processou 2 -> 4
+
+Análise dos Resultados: O log de saída é a principal evidência do sucesso da arquitetura. O intercalar das mensagens confirma que as três threads estavam ativas ao mesmo tempo, cada uma em seu estágio. Isso aumenta a vazão do sistema, pois o tempo total de execução não é a soma dos tempos de cada estágio, mas sim o tempo do estágio mais lento, mais a latência inicial para preencher o pipeline. O programa processa todos os 20 itens sem perda de dados, duplicação ou travamento. Isso prova que o mecanismo de sincronização funcionou corretamente, gerenciando o acesso às filas de forma segura, mesmo sob alta contenção. A ausência de travamentos quando as filas ficam cheias ou vazias demonstra a eficácia do pthread_cond_wait e pthread_cond_signal.
 
 6>
 
