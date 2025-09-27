@@ -72,13 +72,22 @@ Análise dos Resultados:
 
 6>
 
-Como Compilar/Rodar:
+Como Compilar/Rodar: Use o compilador GCC e a flag -pthread: gcc Lista1-6.c -o Lista1-6 -pthread Para testar, crie um arquivo (dados.txt) com números inteiros (separados por espaço ou linha), por exemplo, milhares de números aleatórios entre 0 e 1000. Execute o programa passando o nome do arquivo de dados: ./Lista1-6 dados.txt
 
-Decisões de Sincronização:
+Decisões de Sincronização: O trabalho em fatias disjuntas garante que não há variáveis compartilhadas sendo modificadas simultaneamente, prevenindo data races. O pthread_join garante que a thread principal só inicie a leitura dos resultados locais (soma_local, hist_local) depois que a worker correspondente tiver terminado de escrevê-los. Isso assegura a correção dos resultados sem a complexidade de locks.
 
-Evidências de Execução:
+Evidências de Execução: Exemplo de Saída:
 
-Análise dos Resultados:
+Lidos 1000000 inteiros do arquivo.
+Soma total = 500500000
+Histograma (valores não-nulos):
+...
+499: 1001
+500: 998
+
+Análise dos Resultados: Evidência de Paralelismo: Se o tempo de execução com P=4 for significativamente menor do que o tempo de execução com P=1, o paralelismo está funcionando e a carga de trabalho está sendo distribuída de forma eficaz entre os núcleos da CPU.
+
+Eficiência: Como o código evita locks durante a fase de processamento, ele minimiza a sobrecarga de sincronização, maximizando a eficiência da computação paralela. O gargalo principal será a leitura do arquivo e o tempo de agregação, que é rápido.
 
 7>
 
