@@ -42,13 +42,23 @@ Análise dos Resultados: O programa processa corretamente o número esperado de 
 
 3>
 
-Como Compilar/Rodar:
+Como Compilar/Rodar: Use o compilador GCC e a flag -pthread: gccLista1-3.c -o Lista1-3 -pthread
 
-Decisões de Sincronização:
+Execução: ./Lista1-3
+O código está configurado para usar_travas = 1 por padrão, executando a versão correta e segura. Para testar a condição de corrida, a variável global usar_travas precisa ser alterada para 0 no código-fonte e recompilada.
 
-Evidências de Execução:
+Decisões de Sincronização: O sistema utiliza um array de Mutexes (conta_mutex[M]) para implementar travamento granular. Isso permite que transações envolvendo contas diferentes ocorram em paralelo, aumentando a concorrência. Cada conta (M=10) possui seu próprio Mutex. Apenas as operações que envolvem o par de contas (src, dst) são bloqueadas, permitindo alta concorrência.
 
-Análise dos Resultados:
+Evidências de Execução: O experimento testa a invariância do sistema: a soma total de dinheiro no banco (soma_global()) deve ser a mesma antes e depois de todas as transações, pois a transferência apenas move valor, não o cria nem o destrói. como: Execução com travas
+Soma inicial: 1000000
+Soma final:   1000000
+assert: programa termina sem erro (sucesso)
+
+Análise dos Resultados: Sincronização é Fundamental em sistemas multi-threads que manipulam estados compartilhados, o uso de Mutexes é obrigatório para garantir a integridade transacional.
+
+Prevenção de Deadlock é Crítica: A técnica de Ordem Global de Recursos resolve o problema de Espera Circular que ocorreria se duas threads tentassem transferir dinheiro simultaneamente em ordens inversas.
+
+Travamento Granular: O uso de Mutexes por recurso permite que a maioria das transações ocorram em paralelo, maximizando o desempenho.
 
 4>
 
