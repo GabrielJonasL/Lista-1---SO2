@@ -82,13 +82,17 @@ Análise dos Resultados:
 
 7>
 
-Como Compilar/Rodar:
+Como Compilar/Rodar: Use o compilador GCC e a flag -pthread. A flag -pthread é crucial, pois ela vincula tanto as funções de threads quanto as de semáforo no Linux: gcc Lista1-7.c -o Lista1-7 -pthread e execute com ./Lista1-7 O programa executará as threads até que todas as 100 refeições sejam concluídas e, em seguida, exibirá as estatísticas.
 
-Decisões de Sincronização:
+Decisões de Sincronização: Recursos Compartilhados onde ada Mutex representa um garfo. Os filósofos competem por eles usando pthread_mutex_lock. A prevenção de deadlock implementa a solução de restrição de filósofos. Ao usar sem_wait, limita o número de filósofos que podem tentar pegar os garfos a 4, garantindo que sempre haverá recursos suficientes para que pelo menos um filósofo consiga pegar ambos os garfos e comer.
 
-Evidências de Execução:
+Evidências de Execução: Exemplo de Saída (Usando Semáforo N−1):
 
-Análise dos Resultados:
+=== Estatísticas (Solução 2: Semaforo N-1) ===
+Filosofo 0: refeicoes=20, maior espera=0.002s
+Filosofo 1: refeicoes=20, maior espera=0.001s
+
+Análise dos Resultados: Os valores de espera são geralmente muito baixos. Isso indica que a solução não gera inanição significativa, pois os filósofos não ficam bloqueados por longos períodos. A latência baixa sugere que a restrição de N−1 não limitou excessivamente a concorrência. Embora 5 filósofos estivessem competindo por 5 garfos, a limitação a 4 concorrentes ativos permitiu um fluxo de trabalho rápido e eficiente.
 
 8>
 
