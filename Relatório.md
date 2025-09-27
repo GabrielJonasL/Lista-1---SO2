@@ -85,13 +85,20 @@ Análise dos Resultados: O log de saída é a principal evidência do sucesso da
 
 5>
 
-Como Compilar/Rodar:
+Como Compilar/Rodar: Use o compilador GCC e a flag -pthread: gcc Lista1-5.c -o Lista1-5 -pthread
+Execução: ./Lista1-5
+O programa pedirá que o usuário digite números na linha de comando. Após digitar todos os números desejados, o usuário deve enviar o sinal de EOF para finalizar a entrada e iniciar o desligamento do sistema.
 
-Decisões de Sincronização:
+Decisões de Sincronização: Mutex: Produtor: Usado em fila_push para proteger a estrutura da fila. Consumidor: Usado em fila_pop para proteger a estrutura da fila.
 
-Evidências de Execução:
+Evidências de Execução: [Thread 2] 100 -> NAO PRIMO
+[Thread 0] 13 -> PRIMO
+[Thread 3] 7 -> PRIMO
+[Thread 1] 25 -> NAO PRIMO
+[Thread 2] Encerrando.
+[Thread 0] Encerrando.
 
-Análise dos Resultados:
+Análise dos Resultados: Balanceamento de Carga: As mensagens de [Thread X] mostram que as tarefas de verificação de primalidade são distribuídas entre as N_THREADS=4 workers. Isso é a essência da thread pool, onde múltiplas CPUs podem trabalhar em paralelo para reduzir o tempo total de processamento.
 
 6>
 
