@@ -52,27 +52,17 @@ Análise dos Resultados:
 
 4>
 
-Como Compilar/Rodar:
-
-Decisões de Sincronização:
-
-Evidências de Execução:
-
-Análise dos Resultados:
-
-5>
-
 Como Compilar/Rodar: O código utiliza a biblioteca POSIX Threads, que requer uma flag específica durante a compilação para ser vinculada corretamente ao executável.
 
 Passos para Compilação e Execução:
 
-Salve o código-fonte em um arquivo, por exemplo, pipeline_processamento.c.
+Salve o código-fonte em um arquivo, por exemplo, Lista1-4.c.
 
 Navegue até o diretório onde o arquivo foi salvo.
 
-Use o compilador GCC (ou Clang) com a flag -pthread para incluir as bibliotecas de threads.
+Use o compilador GCC com a flag -pthread para incluir as bibliotecas de threads.
 
-Então gcc -o Lista1-5 Lista1-5.c -pthread Executar: Inicie o programa a partir do terminal. ./Lista1-5
+Então gcc -o Lista1-4 Lista1-4.c -pthread Executar: Inicie o programa a partir do terminal. ./Lista1-4
 
 Decisões de Sincronização: O desafio de sincronização neste código é gerenciar o acesso a duas filas compartilhadas por múltiplas threads, evitando condições de corrida e o consumo ineficiente de CPU.
 
@@ -92,6 +82,16 @@ Evidências de Execução: $ ./pipeline_processamento
     [Processamento] Processou 2 -> 4
 
 Análise dos Resultados: O log de saída é a principal evidência do sucesso da arquitetura. O intercalar das mensagens confirma que as três threads estavam ativas ao mesmo tempo, cada uma em seu estágio. Isso aumenta a vazão do sistema, pois o tempo total de execução não é a soma dos tempos de cada estágio, mas sim o tempo do estágio mais lento, mais a latência inicial para preencher o pipeline. O programa processa todos os 20 itens sem perda de dados, duplicação ou travamento. Isso prova que o mecanismo de sincronização funcionou corretamente, gerenciando o acesso às filas de forma segura, mesmo sob alta contenção. A ausência de travamentos quando as filas ficam cheias ou vazias demonstra a eficácia do pthread_cond_wait e pthread_cond_signal.
+
+5>
+
+Como Compilar/Rodar:
+
+Decisões de Sincronização:
+
+Evidências de Execução:
+
+Análise dos Resultados:
 
 6>
 
